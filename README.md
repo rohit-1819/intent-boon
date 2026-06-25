@@ -101,34 +101,41 @@ IntentBoon/
 │   │   ├── build/
 │   │   │   ├── ngsdn.json        ← Compiled bmv2 pipeline (p4c output)
 │   │   │   └── p4info.txt        ← P4Info descriptor (used by ONOS)
-│   │   └── compile.sh            ← Script: p4c --target bmv2 ...
 │   │
 │   ├── onos/
-│   │   ├── netcfg.json           ← ONOS network config (device gRPC addresses + pipeconf)
-│   │   ├── activate_apps.sh      ← Script to activate required ONOS app bundles
-│   │   └── README_onos.md        ← ONOS setup instructions
+│   │   ├── pom.xml
+│   │   ├── src/
+|   |   |   ├── L2BridgingComponent.java
+|   |   |   ├── MainComponent.java
+|   |   |   └── QosRestServlet.java
+│   │   └── README.txt
 │   │
 │   ├── mininet/
-│   │   ├── ngsdn_topo.py         ← Mininet topology script (spine-leaf, 6 hosts, IPv6)
-│   │   ├── start_network.sh      ← One-click: starts Mininet + connects to ONOS
-│   │   └── traffic/
-│   │       ├── generate_voip.sh       ← iperf VoIP traffic (h1c → h1a)
-│   │       ├── generate_gaming.sh     ← iperf gaming traffic (h1a)
-│   │       ├── generate_video.sh      ← iperf video stream (h1b)
-│   │       └── generate_flood.sh      ← iperf backup_sync flood (h2, for testing)
+│   │   ├── topo.py         ← Mininet topology script (spine-leaf, 6 hosts, IPv6)
+│   │   └── netcfg.json
 │   │
 │   └── docker-compose.yml        ← Starts ONOS 2.7 container with correct port bindings
 │
 ├── ai/                           ← Everything AI / Python / Flask side
-│   │
-│   ├── src/
-│   │   ├── app.py                ← Flask entry point, POST /translate
-│   │   ├── orchestrator.py       ← Pipeline controller (deploy/resolve/block)
-│   │   ├── semantic_engine.py    ← Gemini LLM intent parser
-│   │   ├── inference.py          ← DoWhy GCM counterfactual engine (Q1 + Q2)
-│   │   ├── conflict_resolver.py  ← Causal slope recovery + impact ranking
-│   │   ├── discovery.py          ← ONOS topology + telemetry fetch
-│   │   └── onos_client.py        ← All ONOS REST API calls
+│   ├── sementic/
+|   |   ├── app.py
+|   |   ├── nexus_voice.py
+|   |   ├── qos_mapping.py
+|   |   ├── semantic_engine.py
+|   |   └── templates/
+|   |   |   └── index.html
+|   |   
+|   ├── Causal/
+|   |   ├── models/
+|   |   |   ├── casual_graph.py
+|   |   |   └── structural_model.py
+│   |   ├── src/
+│   │   |   ├── orchestrator.py       ← Pipeline controller (deploy/resolve/block)
+│   │   |   ├── inference.py          ← DoWhy GCM counterfactual engine (Q1 + Q2)
+│   │   |   ├── conflict_resolver.py  ← Causal slope recovery + impact ranking
+│   │   |   ├── discovery.py          ← ONOS topology + telemetry fetch
+│   │   |   ├── onos_client.py        ← All ONOS REST API calls
+|   |   |   └── __pycache__
 │   │
 │   ├── data/
 │   │   ├── topology_metadata.json   ← Node/link definitions + service-to-host mapping
@@ -138,11 +145,6 @@ IntentBoon/
 │   │
 │   ├── notebook/
 │   │   └── exploration.ipynb     ← EDA, causal graph visualization, telemetry plots
-│   │
-│   └── tests/
-│       ├── test_semantic.py      ← Unit tests for intent parsing
-│       ├── test_inference.py     ← Unit tests for counterfactual engine
-│       └── test_resolver.py      ← Unit tests for conflict resolution
 │
 ├── frontend/                     ← (optional) simple web UI
 │   ├── index.html
@@ -150,8 +152,6 @@ IntentBoon/
 │   └── app.js
 │
 └── docs/
-    ├── architecture.png          ← System architecture diagram
-    ├── causal_dag.png            ← Causal DAG figure
     └── project_report.pdf        ← Full B.Tech project report
 ```
 
