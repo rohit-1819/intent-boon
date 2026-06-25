@@ -123,8 +123,8 @@ IntentBoon/
 |   |   ├── qos_mapping.py
 |   |   ├── semantic_engine.py
 |   |   └── templates/
-|   |   |   └── index.html
-|   |   
+|   |       └── index.html
+|   
 |   ├── Causal/
 |   |   ├── models/
 |   |   |   ├── casual_graph.py
