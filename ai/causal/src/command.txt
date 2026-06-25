@@ -1,0 +1,35 @@
+cd causal-ibn-project/src
+source ../onos_env.sh
+
+python3 - << 'EOF'
+from discovery import get_current_network_state
+state = get_current_network_state()
+if state:
+    print("Source:", state["source"])
+    print("Nodes:", [n["id"] for n in state["topology"]["nodes"]])
+    print("Telemetry keys:", list(state["telemetry"].keys()))
+    for node, data in state["telemetry"].items():
+        print(f"  {node}: bw={data['bandwidth_used_mbps']} Mbps")
+EOF
+
+
+curl -u onos:rocks http://localhost:8181/onos/v1/devices | \
+    python3 -m json.tool | grep '"id"'
+
+curl -u onos:rocks -X POST \
+     -H "Content-Type: application/json" \
+     -d '{"type":"video"}' \
+     http://localhost:8181/ngsdn/qos
+
+curl -u onos:rocks \
+     -X POST \
+     -H "Content-Type: application/json" \
+     -d '{"type":"voice"}' \
+     http://localhost:8181/ngsdn/qos
+
+
+h1a iperf -V -u -s &
+h1a iperf -V -u -s -p 5004 &
+
+h1b iperf -V -u -c 2001:1:1::a -p 5004 -b 2M -t 60 -l 200 &
+h1b iperf -V -u -c 2001:1:1::a -b 2M -t 60 -l 200 
